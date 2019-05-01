@@ -1,0 +1,31 @@
+{
+  "name": "msl_proxy",
+  "version": "1.0.0",
+  "description": "MSL Proxy",
+  "main": "server/application.js",
+  "scripts": {
+    "start": "node --use_strict server/application.js",
+    "test": "mocha --reporter progress \"server/**/*.test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mysublife/msl_proxy.git"
+  },
+  "author": "MySubLife",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/mysublife/msl_proxy/issues"
+  },
+  "homepage": "https://github.com/mysublife/msl_proxy#readme",
+  "engines": {
+    "node": ">=11.10.0"
+  },
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "http-proxy": "^1.17.0"
+  },
+  "devDependencies": {
+    "chai": "latest",
+    "mocha": "latest"
+  }
+}

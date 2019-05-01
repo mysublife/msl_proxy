@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "rules": {
+    "no-console": "off",
+    "node/no-unpublished-require": "off",
+    "no-unused-vars":"warn"
+  }
+}
