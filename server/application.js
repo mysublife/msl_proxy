@@ -19,7 +19,9 @@ const httpsServer = https.createServer({
     cert: fs.readFileSync(process.env.PATH_TO_CRT)
   },
   (req, res) => {
-    proxy.web(req, res, {target: process.env.PROXY_TARGET_WEB});
+    proxy.web(req, res, {"target": process.env.PROXY_TARGET_WEB}, (e) => {
+      console.error(e);
+    });
 });
 
 var timeout;
@@ -49,7 +51,9 @@ httpsServer.on("upgrade", function (req, socket, head) {
     return;
   }
 
-  proxy.ws(req, socket, head, {"target": target});
+  proxy.ws(req, socket, head, {"target": target}, (e) => {
+    console.error(e);
+  });
 });
 
 httpServer.listen(process.env.PORT_HTTP);
