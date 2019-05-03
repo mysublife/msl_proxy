@@ -1,5 +1,3 @@
-// TODO: Add redirect from HTTP to proper URL in HTTPS
-
 require("dotenv").config();
 
 const fs = require("fs");
@@ -9,12 +7,19 @@ const httpProxy = require("http-proxy");
 
 const proxy = new httpProxy.createProxyServer();
 
+const httpServer = http.createServer((req, res) => {
+  res.writeHead(301,
+    {Location: "https://" + req.headers.host + req.url}
+  );
+  res.end();
+});
+
 const httpsServer = https.createServer({
     key: fs.readFileSync(process.env.PATH_TO_KEY),
     cert: fs.readFileSync(process.env.PATH_TO_CRT)
   },
   (req, res) => {
-    proxy.web(req, res, {target: "http://localhost:80"});
+    proxy.web(req, res, {target: process.env.PROXY_TARGET_WEB});
 });
 
 var timeout;
@@ -33,10 +38,10 @@ httpsServer.on("upgrade", function (req, socket, head) {
 
   switch (req.url) {
     case "/ws/chat_private/":
-      target = "ws://localhost:8090";
+      target = process.env.PROXY_TARGET_WS_CHAT_PRIVATE;
       break;
     case "/ws/chat_public/":
-      target = "";
+      target = process.env.PROXY_TARGET_WS_CHAT_PUBLIC;
       break;
   }
 
@@ -47,6 +52,5 @@ httpsServer.on("upgrade", function (req, socket, head) {
   proxy.ws(req, socket, head, {"target": target});
 });
 
-httpsServer.listen(process.env.PORT);
-
-
+httpServer.listen(process.env.PORT_HTTP);
+httpsServer.listen(process.env.PORT_HTTPS);
